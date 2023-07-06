@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styles from './src/component/Styles'
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import axios from 'axios';
 //import { TodoItems } from './src/component/TodoItems'
 
 const App = () => {
@@ -17,16 +18,16 @@ const App = () => {
   const [inputText,setInputText]=useState<string>()
   
     const [todos,setTodos]= useState<Todo[]>([
-    {
-      id:1,
-      title: 'this is sample project',
-      isDone: false,
-    },
-    {
-      id:2,
-      title: 'Marriage function',
-      isDone: true,
-    },
+    // {
+    //   id:1,
+    //   title: 'this is sample project',
+    //   isDone: false,
+    // },
+    // {
+    //   id:2,
+    //   title: 'Marriage function',
+    //   isDone: true,
+    // },
     
   
   
@@ -45,6 +46,11 @@ const App = () => {
       },
     ])};
      setInputText("");
+    // axios.post('https://todo.talrop/create/',{
+    //   title: inputText,
+    // })
+    // .then(response=>console.warn(response.data))
+    // .catch(error=>console.warn(error));
     
   };
 
@@ -79,6 +85,14 @@ const App = () => {
       )
     );
   };
+
+  // const  addTolist=()=>{
+  //   axios.post('https://todo.talrop/create/',{
+  //     title: inputText,
+  //   })
+  //   .then(response=>console.warn(response.data))
+  //   .catch(error=>console.warn(error));
+  // }
 
 
   const removeItem= (todo: Todo)=>{
