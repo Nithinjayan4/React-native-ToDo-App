@@ -7,14 +7,16 @@ const App = () => {
 
   interface Todo {
     id: number;
-    title: string;
+    title?: string;
     isDone: boolean;
   }
   interface TodoItemsProps {
     todo: Todo;
   }
+
+  const [inputText,setInputText]=useState<string>()
   
-    const [Todos,TodoItem]= useState<Todo[]>([
+    const [todos,setTodos]= useState<Todo[]>([
     {
       id:1,
       title: 'this is sample project',
@@ -29,6 +31,59 @@ const App = () => {
   
   
     ])
+
+  
+
+   const addTodolist=() =>{
+    if(inputText){
+    setTodos([
+      ...todos,
+      {
+        id: Math.random() * 1000,
+        title: inputText,
+        isDone: false,
+      },
+    ])};
+     setInputText("");
+    
+  };
+
+
+  const MarkAsdone = (todo: Todo) => {
+    setTodos(
+      todos.map((item) => {
+        if (item.id === todo.id) {
+          return {
+            ...item,
+            isDone: true,
+          };
+        }
+        return item; 
+      }
+      )
+    );
+  };
+
+
+  const MarkAsundo = (todo: Todo) => {
+    setTodos(
+      todos.map((item) => {
+        if (item.id === todo.id) {
+          return {
+            ...item,
+            isDone: false,
+          };
+        }
+        return item; 
+      }
+      )
+    );
+  };
+
+
+  const removeItem= (todo: Todo)=>{
+    setTodos(todos.filter((e)=>(e.id ! == todo.id)))
+  }
 
    
 
@@ -45,7 +100,7 @@ const App = () => {
           <Text style={styles.ItemTitle}>{todo.title}</Text>
         </View>
         ):(
-          <TouchableOpacity style={styles.ItemLeft}>
+          <TouchableOpacity onPress={()=> MarkAsdone(todo)} style={styles.ItemLeft}>
           <View style={styles.CircleView}></View>
           <Text style={styles.ItemTitle}>{todo.title}</Text>
         </TouchableOpacity>
@@ -53,12 +108,12 @@ const App = () => {
         ) }
         <View style={styles.rightBox}>
           {todo.isDone && (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=> MarkAsundo(todo)}>
             <Image style={styles.undoImage} source={require('./src/assets/icons/undo.png')}/>
           </TouchableOpacity>
           )}
-     
-    <TouchableOpacity>
+      
+    <TouchableOpacity onPress={()=> removeItem(todo)}>
       <Image style={styles.deleteIcon} source={require('./src/assets/icons/delete.png')}/> 
     </TouchableOpacity>
     </View>
@@ -75,22 +130,22 @@ const App = () => {
       <Text style={styles.text}>ToDo App</Text>
         <View style={styles.sectionView}>
          <Text style={styles.sectionTitle}>ToDo List</Text>
-         {Todos.filter((item)=>!item.isDone).map((todo)=>(<TodoItems key={todo.id}  todo={todo} />))}
+         {todos.filter((item)=>!item.isDone).map((todo)=>(<TodoItems key={todo.id}  todo={todo} />))}
         
       
          <View style={styles.addView}>
           <View style={styles.addLeft}>
             <Text style={styles.TypeText}>+</Text>
-            <TextInput style={[styles.TypeText, {marginLeft:15}]} placeholder='type new todo...'/>
+            <TextInput onChangeText={ setInputText } value={inputText} style={[styles.TypeText, {marginLeft:15}]} placeholder='type new todo...'/>
           </View>
           <TouchableOpacity style={styles.addButton}>
-            <Text style={styles.addText}>Add New</Text>
+            <Text onPress={addTodolist} style={styles.addText}>Add New</Text>
           </TouchableOpacity>
          </View>
         </View>
         <View style={styles.sectionView}>
         <Text style={styles.sectionTitle}>Completed ToDo</Text>
-        {Todos.filter((item)=>item.isDone).map((todo)=>(<TodoItems key={todo.id}  todo={todo} />))}
+        {todos.filter((item)=>item.isDone).map((todo)=>(<TodoItems key={todo.id}  todo={todo} />))}
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -86,7 +86,7 @@ const styles=StyleSheet.create({
       alignItems: 'center',
       borderTopLeftRadius:6,
       borderBottomLeftRadius:6,
-      borderRightColor:'transparent',
+      borderLeftColor:'transparent',
       
   
   
